@@ -1,0 +1,15 @@
+from pydantic import BaseModel
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+class Settings(BaseModel):
+    app_name: str = os.getenv("APP_NAME", "RAG LLM Security Scanner")
+    app_env: str = os.getenv("APP_ENV", "development")
+    backend_host: str = os.getenv("BACKEND_HOST", "127.0.0.1")
+    backend_port: int = int(os.getenv("BACKEND_PORT", "8000"))
+
+
+settings = Settings()
