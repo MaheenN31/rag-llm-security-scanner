@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
@@ -14,7 +14,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
-    sources: List[Source] = []
+    sources: List[Source] = Field(default_factory=list)
 
 
 class HealthResponse(BaseModel):
@@ -27,3 +27,43 @@ class UploadResponse(BaseModel):
     filename: str
     status: str
     message: Optional[str] = None
+
+
+class DocumentMetadata(BaseModel):
+    doc_id: str
+    title: str
+    owner: str
+    allowed_roles: List[str]
+    classification: str
+    source: str
+
+
+class DocumentSummary(DocumentMetadata):
+    chunk_count: int
+    char_count: int
+
+
+class DocumentDetail(DocumentSummary):
+    content: str
+
+
+class DocumentChunk(BaseModel):
+    chunk_id: str
+    doc_id: str
+    document_title: str
+    source: str
+    classification: str
+    allowed_roles: List[str]
+    chunk_index: int
+    content: str
+
+
+class DocumentListResponse(BaseModel):
+    documents: List[DocumentSummary]
+    count: int
+
+
+class ChunkListResponse(BaseModel):
+    chunks: List[DocumentChunk]
+    count: int
+    role_filter: Optional[str] = None
