@@ -67,3 +67,26 @@ class ChunkListResponse(BaseModel):
     chunks: List[DocumentChunk]
     count: int
     role_filter: Optional[str] = None
+
+class IndexResponse(BaseModel):
+    status: str
+    indexed_chunks: int
+    collection_name: str
+
+
+class RetrievalResult(BaseModel):
+    chunk_id: str
+    doc_id: str
+    document_title: str
+    source: str
+    classification: str
+    allowed_roles: List[str]
+    content: str
+    distance: float | None = None
+
+
+class RetrievalSearchResponse(BaseModel):
+    query: str
+    role: str
+    results: List[RetrievalResult]
+    count: int
